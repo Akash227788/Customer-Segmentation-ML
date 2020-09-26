@@ -39,7 +39,7 @@ st.sidebar.info("""
 
 st.markdown("""
 	## About Data
-	this file contains the basic information (ID, age, gender, income, spending score) about the customers
+	This data contains the basic information (ID, age, gender, income, spending score) about the customers
 	""")
 
 st.markdown("""
@@ -50,11 +50,11 @@ st.markdown("""
 
 st.markdown("""
 	## Target
-	By the end of this case study , you would be able to answer below questions.
-	1- How to achieve customer segmentation using machine learning algorithm (KMeans Clustering) in Python in simplest way.
-	2- Who are your target customers with whom you can start marketing strategy [easy to converse]
-	3- How the marketing strategy works in real world
-	""")
+	By the end of this case study , you would be able to answer below questions. <br>
+	1. How to achieve customer segmentation using machine learning algorithm (KMeans Clustering) in Python in simplest way. <br>
+	2. Who are your target customers with whom you can start marketing strategy [easy to converse] <br>
+	3. How the marketing strategy works in real world
+	""", True)
 
 
 st.cache(persist = True)
@@ -63,6 +63,7 @@ st.sidebar.markdown("""
 	""")
 
 if st.sidebar.checkbox("RAW DATA"):
+	st.subheader("Raw Data")
 	st.write(customer)
 
 # This shows male and female ratio
@@ -78,37 +79,38 @@ st.markdown("""
 	""")
 
 if st.sidebar.checkbox("Data Analysis"):
-	st.subheader("Pie chart")
+	st.subheader("Gender Ratio")
 	labels = ['Female', 'Male']
 	size = customer['Gender'].value_counts()
 	colors = ['lightgreen', 'orange']
 	explode = [0, 0.1]
 
-	plt.rcParams['figure.figsize'] = (5, 5)
+	plt.rcParams['figure.figsize'] = (7, 7)
 	plt.pie(size, colors = colors, explode = explode, labels = labels, shadow = True, autopct = '%.2f%%')
 	plt.title('Gender', fontsize = 20)
 	plt.axis('off')
 	plt.legend()
 	st.pyplot()
 
-	st.subheader("Second chart")
-	plt.figure(figsize = (18,8))
+	st.subheader("Age countplot")
+	plt.figure(figsize = (22,14))
 	ax = sns.countplot(x="Age", hue="Gender", data=customer)
 	st.pyplot()
 
-	st.subheader("Third chart")
-	plt.figure(figsize = (18,8))
+	st.subheader("Income Countplot")
+	plt.figure(figsize = (22,14))
 	ax = sns.countplot(x="Income", hue="Gender", data=customer)
 	st.pyplot()
 
-
-	plt.figure(figsize = (15,20))
+	st.subheader("Spending Score Countplot")
+	plt.figure(figsize = (22,14))
 	ax = sns.countplot(y="Spending_Score", hue="Gender", data=customer)	
 	st.pyplot()
 
+	st.subheader("Pairplot")
 	sns.pairplot(customer, vars= ['Age', 'Income', 'Spending_Score'], hue="Gender")
 	fig = plt.gcf()
-	fig.set_size_inches(17,10)	
+	fig.set_size_inches(22,14)	
 	st.pyplot()
 
 	
@@ -137,9 +139,9 @@ if st.sidebar.checkbox("K Means Algorithm"):
 
 	sns.lineplot(x = 'Clusters', y = 'WSS', data = mycenters, marker="+")
 	plt.title("Spending score x Income")
-
+	st.subheader("Elbow plot for Income V/S Spending Score")
 	fig = plt.gcf()
-	fig.set_size_inches(15,5)
+	fig.set_size_inches(22,14)
 	st.pyplot()
 	# We get 5 Clusters
 
@@ -150,7 +152,7 @@ if st.sidebar.checkbox("K Means Algorithm"):
 	customer['Clusters'] = kmeans.labels_
 
 	customer.to_csv('mallClusters.csv', index = False)
-
+	st.subheader("Clusters Pairplot for Income V/S Spending Score")
 	sns.pairplot(customer, vars= ['Age', 'Income', 'Spending_Score'], hue="Clusters", height=4)
 	st.pyplot()
 
@@ -166,7 +168,7 @@ if st.sidebar.checkbox("K Means Algorithm"):
 	kmeans = KMeans(n_clusters = 5, init = 'k-means++', max_iter = 300, n_init = 10, random_state = 0)
 	ymeans = kmeans.fit_predict(y)
 
-	plt.rcParams['figure.figsize'] = (12, 10)
+	plt.rcParams['figure.figsize'] = (22,14)
 	plt.title('Cluster of Annual Income', fontsize = 30)
 
 	plt.scatter(y[ymeans == 0, 0], y[ymeans == 0, 1], s = 100, c = 'pink', label = 'Priority Customers' )
@@ -175,7 +177,7 @@ if st.sidebar.checkbox("K Means Algorithm"):
 	plt.scatter(y[ymeans == 3, 0], y[ymeans == 3, 1], s = 100, c = 'red', label = 'Target Customers(Less Income)')
 	plt.scatter(y[ymeans == 4, 0], y[ymeans == 4, 1], s = 100, c = 'blue', label = 'Moderately spending customers')
 	plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s = 50, c = 'Black', marker ='*')
-
+	st.subheader("Cluster plot for Income V/S Spending Score")
 	plt.style.use('fivethirtyeight')
 	plt.xlabel('Annual Income')
 	plt.ylabel('Spending Score (1-100)')
@@ -187,7 +189,7 @@ st.cache()
 # Spending score and age clustering
 
 st.sidebar.markdown("""
-	## K Means Algorithm for age V/S spending score
+	## K Means Algorithm for Age V/S Spending score
 	""")
 
 if st.sidebar.checkbox("K Means Algorithm ") :
@@ -202,12 +204,12 @@ if st.sidebar.checkbox("K Means Algorithm ") :
 	    wss.append(wss_iter)
 
 	mycenters1 = pd.DataFrame({'Clusters1' : K, 'WSS' : wss})
-	
+	st.subheader("Elbow plot for Age V/S Spending Score")
 	sns.lineplot(x = 'Clusters1', y = 'WSS', data = mycenters1, marker="+")
 	plt.title("Spending score x Age")
 
 	fig = plt.gcf()
-	fig.set_size_inches(15,5)
+	fig.set_size_inches(22,14)
 	# We get 4 Clusters    
 	st.pyplot()
 
@@ -222,9 +224,9 @@ if st.sidebar.checkbox("K Means Algorithm ") :
 	kmeans = KMeans(n_clusters = 4, init = 'k-means++', max_iter = 300, n_init = 10, random_state = 0)
 	ymeans = kmeans.fit_predict(x)
 
-	plt.rcParams['figure.figsize'] = (10, 10)
+	plt.rcParams['figure.figsize'] = (22,14)
 	plt.title('Cluster of Ages', fontsize = 30)
-
+	st.subheader("Cluster plot for Age V/S Spending Score")
 	plt.scatter(x[ymeans == 0, 0], x[ymeans == 0, 1], s = 100, c = 'pink', label = 'Usual Customers' )
 	plt.scatter(x[ymeans == 1, 0], x[ymeans == 1, 1], s = 100, c = 'orange', label = 'Priority Customers')
 	plt.scatter(x[ymeans == 2, 0], x[ymeans == 2, 1], s = 100, c = 'lightgreen', label = 'Target Customers(Young)')
@@ -245,6 +247,7 @@ st.sidebar.markdown("""
 	""")
 
 if st.sidebar.checkbox("Hierarchical Clustering Algorithm") :
+	st.subheader("Dendrogram to find out clusters")
 	X = customer.iloc[:,[3,4]].values
 	plt.figure(figsize=(15,6))
 	plt.title('Dendrogram')
@@ -270,6 +273,7 @@ if st.sidebar.checkbox("Hierarchical Clustering Algorithm") :
 	plt.ylabel('Spending Score (1-100)',fontsize=16)
 	plt.legend(fontsize=16)
 	plt.grid(True)
+	st.subheader("Hierarchical Clustering Clusters")
 	plt.axhspan(ymin=60,ymax=100,xmin=0.4,xmax=0.96,alpha=0.3,color='yellow')
 	st.pyplot()
 
