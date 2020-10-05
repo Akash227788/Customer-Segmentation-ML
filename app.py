@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 #%matplotlib inline
 
-import spacy
+
 
 import sklearn.cluster as cluster
 
