@@ -18,6 +18,7 @@ import scipy.cluster.hierarchy as sch
 from sklearn.cluster import AgglomerativeClustering
 
 
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
 #@st.cache
 #URL = "A:\\Fde_final_app\\Mall_Customers.csv"
